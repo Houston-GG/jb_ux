@@ -4,6 +4,7 @@ import com.example.jb_ux.dao.RecipientDao;
 import com.example.jb_ux.dao.TemplateDao;
 import com.example.jb_ux.dto.template.NewTemplate;
 import com.example.jb_ux.dto.template.TemplateDto;
+import com.example.jb_ux.exception.TemplateNotFoundException;
 import com.example.jb_ux.model.DispatchMethod;
 import com.example.jb_ux.model.Recipient;
 import com.example.jb_ux.model.Template;
@@ -28,6 +29,11 @@ public class TemplateService {
         this.templateDao = templateDao;
         this.modelMapper = modelMapper;
         this.recipientDao = recipientDao;
+    }
+
+    public Template findTemplateById(String templateById) {
+        return templateDao.findById(templateById)
+                .orElseThrow(() -> new TemplateNotFoundException("Template with ID " + templateById + " not found."));
     }
 
     public List<TemplateDto> getAll() {
