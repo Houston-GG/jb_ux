@@ -34,6 +34,8 @@ public class DispatchController {
             throw new ResponseStatusException(HttpStatus.CONFLICT, exception.getMessage());
         } catch (TemplateNotFoundException exception) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, exception.getMessage());
+        } catch (IllegalArgumentException exception) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Unknown dispatch methods detected.");
         }
     }
 }
