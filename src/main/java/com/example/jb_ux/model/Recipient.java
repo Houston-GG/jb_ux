@@ -1,12 +1,14 @@
 package com.example.jb_ux.model;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "recipient")
 public class Recipient {
@@ -26,4 +28,10 @@ public class Recipient {
 
     @Column(name = "VALUE", nullable = false)
     private String value;
+
+    public Recipient(Template template, DispatchMethod dispatchMethod, String value) {
+        this.template = template;
+        this.dispatchMethod = dispatchMethod;
+        this.value = value;
+    }
 }
