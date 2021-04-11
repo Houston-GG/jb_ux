@@ -1,6 +1,7 @@
 package com.example.jb_ux.model;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -8,6 +9,7 @@ import java.util.List;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "template")
 public class Template {
@@ -24,4 +26,10 @@ public class Template {
 
     @OneToMany(mappedBy = "template")
     private List<Schedule> schedules;
+
+    public Template(String id, String templateString, List<Recipient> recipients) {
+        this.id = id;
+        this.templateString = templateString;
+        this.recipients = recipients;
+    }
 }
