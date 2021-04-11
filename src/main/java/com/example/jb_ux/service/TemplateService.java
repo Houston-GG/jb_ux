@@ -5,6 +5,7 @@ import com.example.jb_ux.dao.TemplateDao;
 import com.example.jb_ux.dto.template.NewTemplate;
 import com.example.jb_ux.dto.template.TemplateDto;
 import com.example.jb_ux.exception.TemplateNotFoundException;
+import com.example.jb_ux.exception.TemplateValuesException;
 import com.example.jb_ux.model.DispatchMethod;
 import com.example.jb_ux.model.Recipient;
 import com.example.jb_ux.model.Template;
@@ -15,6 +16,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service
@@ -45,6 +49,22 @@ public class TemplateService {
 
     public void saveNewTemplate(NewTemplate newTemplate) {
         recipientDao.saveAll(convertToEntity(newTemplate).getRecipients());
+    }
+
+    public String processTemplate(String templateString, Map<String, String> values) {
+
+        Pattern pattern = Pattern.compile("\\$(\\w+)\\$");
+        Matcher matcher = pattern.matcher(templateString);
+        StringBuffer resultString = new StringBuffer();
+        while (matcher.find()) {
+
+            if (values.get(matcher.group(1)) == null)
+                throw new TemplateValuesException("No value provided for the key [$" + matcher.group(1) + "$].");
+
+            matcher.appendReplacement(resultString, values.get(matcher.group(1)));
+        }
+        matcher.appendTail(resultString);
+        return resultString.toString();
     }
 
     private TemplateDto convertToDto(Template template) {
