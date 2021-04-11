@@ -38,7 +38,7 @@ import java.util.Map;
         for (Recipient recipient:  recipients) {
 
             try {
-                ResponseEntity<Object> resource = restTemplate.postForEntity(recipient.getValue(), new Message(message), Object.class);
+                ResponseEntity<String> resource = restTemplate.postForEntity(recipient.getValue(), new Message(message), String.class);
                 result.put(recipient.getValue(), resource.getStatusCode().toString());
             } catch (IllegalArgumentException exception) {
                 result.put(recipient.getValue(), "Uri is not absolute spring");
